@@ -23,14 +23,12 @@ fun main() {
         return mutableElves
     }
 
-    val elvesText = readInput("day_01/Day01")
+    val elvesText = readInput("day_01/Day01.txt")
     val elves = parseElves(elvesText)
 
     val sortedElves = elves
         .mapIndexed { index, elf -> index to elf }
         .sortedByDescending { (_, elf) -> elf.totalCalories }
-
-
     println("Solution 1: Elf: ${sortedElves.first().first}. Total Calories: ${sortedElves.first().second.totalCalories}")
 
     val topThreeCalories = sortedElves

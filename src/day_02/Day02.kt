@@ -23,12 +23,12 @@ enum class Shape(val letters: List<Char>, val pointValue: Int) {
             // tie = 3
             this == other -> score += 3
 
-            // victories are 6
+            // victories = 6
             (this == ROCK && other == SCISSORS)
                 || (this == PAPER && other == ROCK)
                 || (this == SCISSORS && other == PAPER) -> score += 6
 
-            // loss is nothing
+            // loss = 0
             else -> { /* no-op */ }
         }
 
@@ -62,7 +62,7 @@ data class RequiredOutcomeRound(
     val elfShape: Shape,
     val requiredResult: Result
 ) {
-    val myShape: Shape get() {
+    private val myShape: Shape get() {
         return when (requiredResult) {
             Result.WIN -> {
                 when (elfShape) {
@@ -86,18 +86,7 @@ data class RequiredOutcomeRound(
 }
 
 fun main() {
-
-    // A/X = Rock = 1 pt
-    // B/Y = Paper = 2 pts
-    // C/Z = Scissors = 3 pts
-
-    // 0 = Loss
-    // 3 = Draw
-    // 6 = Win
-
-
-    val roundsText = readInput("day_02/Day02")
-
+    val roundsText = readInput("day_02/Day02.txt")
 
     val solution1Rounds = roundsText.map {  text ->
         Round(
@@ -106,7 +95,6 @@ fun main() {
         )
     }
     println("Solution 1: Total Score: ${solution1Rounds.sumOf { it.myRoundResult }}")
-
 
     val solution2Rounds = roundsText.map { text ->
         RequiredOutcomeRound(
