@@ -5,6 +5,9 @@ plugins {
 repositories {
     mavenCentral()
 }
+dependencies {
+    implementation("org.junit.jupiter:junit-jupiter:5.9.0")
+}
 
 tasks {
     sourceSets {

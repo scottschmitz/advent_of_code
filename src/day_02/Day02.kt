@@ -2,7 +2,7 @@ package day_02
 
 import readInput
 
-enum class Shape(val letters: List<Char>, val pointValue: Int) {
+enum class Shape(val letters: List<Char>, private val pointValue: Int) {
     ROCK(listOf('A', 'X'), 1),
     PAPER(listOf('B', 'Y'), 2),
     SCISSORS(listOf('C', 'Z'),3),
@@ -85,22 +85,47 @@ data class RequiredOutcomeRound(
     val myRoundResult: Int = myShape.result(elfShape)
 }
 
+object Day02 {
+
+    /**
+     * @return Total Score for all rounds
+     */
+    fun solutionOne(roundsText: List<String>): Int {
+        return roundsText
+            .map {  text ->
+                Round(
+                    elfShape = Shape.fromChar(text[0]),
+                    myShape = Shape.fromChar(text[2])
+                )
+            }
+            .sumOf { round ->
+                round.myRoundResult
+            }
+    }
+
+    /**
+     * @return Total score from updated rule book
+     */
+    fun solutionTwo(roundsText: List<String>): Int {
+        return roundsText
+            .map { text ->
+                RequiredOutcomeRound(
+                    elfShape = Shape.fromChar(text[0]),
+                    requiredResult = Result.fromChar(text[2])
+                )
+            }
+            .sumOf { round ->
+                round.myRoundResult
+            }
+    }
+}
+
 fun main() {
     val roundsText = readInput("day_02/Day02.txt")
 
-    val solution1Rounds = roundsText.map {  text ->
-        Round(
-            elfShape = Shape.fromChar(text[0]),
-            myShape = Shape.fromChar(text[2])
-        )
-    }
-    println("Solution 1: Total Score: ${solution1Rounds.sumOf { it.myRoundResult }}")
+    val solution1 = Day02.solutionOne(roundsText)
+    println("Solution 1: Total Score: $solution1")
 
-    val solution2Rounds = roundsText.map { text ->
-        RequiredOutcomeRound(
-            elfShape = Shape.fromChar(text[0]),
-            requiredResult = Result.fromChar(text[2])
-        )
-    }
-    println("Solution 2: Total Score: ${solution2Rounds.sumOf { it.myRoundResult }}")
+    val solution2 = Day02.solutionTwo(roundsText)
+    println("Solution 2: Total Score: $solution2")
 }

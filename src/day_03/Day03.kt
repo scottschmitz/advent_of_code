@@ -23,36 +23,52 @@ data class ElfGroup(
     }
 }
 
-fun main() {
-    fun parseRucksacks(text: List<String>): List<Rucksack> {
-        return text.map { text ->
-            val rucksackSize = text.length
+object Day03 {
+
+    /**
+     * @return sum of the priority of items erroneously in both compartments
+     */
+    fun solutionOne(rucksacksText: List<String>): Int {
+        val rucksacks = parseRucksacks(rucksacksText)
+        return rucksacks.sumOf { rucksack ->
+            rucksack.errorItemType.toAlphabetPosition()
+        }
+    }
+
+    /**
+     * @return the total priority of elf group badges
+     */
+    fun solutionTwo(rucksacksText: List<String>): Int {
+        val rucksacks = parseRucksacks(rucksacksText)
+        val elfGroups = groupRucksacks(rucksacks)
+        return elfGroups.sumOf { group ->
+            group.badge.toAlphabetPosition()
+        }
+    }
+
+    private fun parseRucksacks(text: List<String>): List<Rucksack> {
+        return text.map { rucksackText ->
+            val rucksackSize = rucksackText.length
             Rucksack(
-                compartmentOne = text.substring(0, (rucksackSize + 1) / 2).toList(),
-                compartmentTwo = text.substring((rucksackSize + 1) / 2, rucksackSize).toList()
+                compartmentOne = rucksackText.substring(0, (rucksackSize + 1) / 2).toList(),
+                compartmentTwo = rucksackText.substring((rucksackSize + 1) / 2, rucksackSize).toList()
             )
         }
     }
 
-    fun groupRucksacks(rucksacks: List<Rucksack>): List<ElfGroup> {
+    private fun groupRucksacks(rucksacks: List<Rucksack>): List<ElfGroup> {
         return rucksacks.chunked(3).map { rucksackGroup ->
-            ElfGroup(
-                rucksacks = rucksackGroup
-            )
+            ElfGroup(rucksacks = rucksackGroup)
         }
     }
+}
 
+fun main() {
     val rucksacksText = readInput("day_03/Day03.txt")
-    val rucksacks = parseRucksacks(rucksacksText)
 
-    val totalPriorityOfErrorItems = rucksacks.sumOf {rucksack ->
-        rucksack.errorItemType.toAlphabetPosition()
-    }
-    println("Solution 1: Total Priority of Error Items: $totalPriorityOfErrorItems")
+    val solutionOne = Day03.solutionOne(rucksacksText)
+    println("Solution 1: Total Priority of Error Items: $solutionOne")
 
-    val elfGroups = groupRucksacks(rucksacks)
-    val totalElfBadgePriorities = elfGroups.sumOf { group ->
-        group.badge.toAlphabetPosition()
-    }
-    println("Solution 2: Total Elf Badge Priorities: $totalElfBadgePriorities")
+    val solutionTwo = Day03.solutionTwo(rucksacksText)
+    println("Solution 2: Total Elf Badge Priorities: $solutionTwo")
 }
