@@ -5,7 +5,7 @@ import java.security.MessageDigest
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = File("src", "$name")
+fun readInput(name: String) = File("src", name)
     .readLines()
 
 /**
@@ -15,17 +15,16 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
     .toString(16)
     .padStart(32, '0')
 
-
+/**
+ * Identifies the position in the alphabet starting at 'a' = 1 and 'A' = 27
+ */
 fun Char.toAlphabetPosition(): Int {
     if (!isLetter()) {
         throw IllegalArgumentException("Passed in non letter.")
     }
 
-    // a = 97
-    // A = 65
-
     return when (isLowerCase()) {
-        true -> code.toByte().toInt() - ('a'.code.toByte().toInt()) + 1
-        else -> code.toByte().toInt() - ('A'.code.toByte().toInt()) + 27
+        true -> code - 'a'.code + 1
+        else -> code - 'A'.code + 27
     }
 }
