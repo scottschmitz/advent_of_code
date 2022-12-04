@@ -1,4 +1,4 @@
-package day_01
+package year_2022.day_01
 
 import readInput
 
@@ -53,7 +53,7 @@ object Day01 {
 }
 
 fun main() {
-    val elvesText = readInput("day_01/Day01.txt")
+    val elvesText = readInput("year_2022/day_01/Day01.txt")
 
     val solutionOne = Day01.solutionOne(elvesText)
     println("Solution 1: Elf: ${solutionOne.first}. Total Calories: ${solutionOne.second}")

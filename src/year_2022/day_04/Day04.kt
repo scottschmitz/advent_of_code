@@ -1,4 +1,4 @@
-package day_04
+package year_2022.day_04
 
 import readInput
 
@@ -52,7 +52,7 @@ object Day04 {
 }
 
 fun main() {
-    val inputText = readInput("day_04/Day04.txt")
+    val inputText = readInput("year_2022/day_04/Day04.txt")
 
     val solutionOne = Day04.solutionOne(inputText)
     println("Solution 1: $solutionOne")

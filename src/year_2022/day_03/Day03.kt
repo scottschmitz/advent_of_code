@@ -1,4 +1,4 @@
-package day_03
+package year_2022.day_03
 
 import readInput
 import toAlphabetPosition
@@ -64,7 +64,7 @@ object Day03 {
 }
 
 fun main() {
-    val rucksacksText = readInput("day_03/Day03.txt")
+    val rucksacksText = readInput("year_2022/day_03/Day03.txt")
 
     val solutionOne = Day03.solutionOne(rucksacksText)
     println("Solution 1: Total Priority of Error Items: $solutionOne")

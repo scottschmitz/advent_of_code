@@ -1,4 +1,4 @@
-package day_01
+package year_2022.day_01
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
