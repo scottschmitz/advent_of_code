@@ -1,21 +1,23 @@
 package year_2021.day_06
 
 import readInput
+import java.math.BigInteger
 
 data class LanternFish(
-    val spawnTimer: Int
+    val spawnTimer: Int,
+    val quantity: BigInteger,
 ) {
     fun advance(): List<LanternFish> {
         val newTime = spawnTimer - 1
 
         return if (newTime < 0) {
             listOf(
-                LanternFish(6),
-                LanternFish(8)
+                LanternFish(6, quantity),
+                LanternFish(8, quantity)
             )
         } else {
             listOf(
-                LanternFish(newTime)
+                LanternFish(newTime, quantity)
             )
         }
     }
@@ -26,32 +28,46 @@ object Day06 {
     /**
      * @return
      */
-    fun solutionOne(text: String): Int {
+    fun solutionOne(text: String): BigInteger {
         var fish = parseFish(text)
         for (i in 0 until 80) {
-           fish = fish.flatMap { it.advance() }
+            fish = fish.flatMap { it.advance() }
+                .groupBy { it.spawnTimer }
+                .map { (timer, fishes) ->
+                    LanternFish(
+                        spawnTimer = timer,
+                        quantity = fishes.sumOf { it.quantity }
+                    )
+                }
         }
-        return fish.size
+        return fish.sumOf { it.quantity }
     }
 
     /**
      * @return
      */
-    fun solutionTwo(text: String): Int {
+    fun solutionTwo(text: String): BigInteger {
         var fish = parseFish(text)
         for (i in 0 until 256) {
-            println("advancing.. day $i")
             fish = fish.flatMap { it.advance() }
+                .groupBy { it.spawnTimer }
+                .map { (timer, fishes) ->
+                    LanternFish(
+                        spawnTimer = timer,
+                        quantity = fishes.sumOf { it.quantity }
+                    )
+                }
         }
-        return fish.size
+        return fish.sumOf { it.quantity }
     }
 
     private fun parseFish(text: String): List<LanternFish> {
         return text
             .split(",")
             .map { Integer.parseInt(it) }
-            .map { timer ->
-                LanternFish(spawnTimer = timer)
+            .groupBy { it }
+            .map { (timer, fish) ->
+                LanternFish(timer, fish.size.toBigInteger())
             }
     }
 }
