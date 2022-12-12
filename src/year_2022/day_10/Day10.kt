@@ -50,7 +50,7 @@ object Day10 {
     /**
      * @return
      */
-    fun solutionTwo(text: List<String>): String {
+    fun solutionTwo(text: List<String>): List<String> {
         val operations = parseCommands(text)
 
         var cycleCount = 1
@@ -78,11 +78,13 @@ object Day10 {
             cycleCount += 1
         }
 
-        solution.windowed(40, 40).forEach {
+        val screen = solution.windowed(40, 40)
+
+        screen.forEach {
             println(it)
         }
 
-        return solution
+        return screen
     }
 
     private fun parseCommands(text: List<String>): List<Operation> {
