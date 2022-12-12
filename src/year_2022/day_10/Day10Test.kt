@@ -164,7 +164,7 @@ internal class Day10Test {
     @Test
     fun testSolutionTwo() {
         val solutionTwo = Day10.solutionTwo(sampleText)
-        
+
         assertEquals("##..##..##..##..##..##..##..##..##..##..", solutionTwo[0])
         assertEquals("###...###...###...###...###...###...###.", solutionTwo[1])
         assertEquals("####....####....####....####....####....", solutionTwo[2])
