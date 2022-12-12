@@ -50,7 +50,7 @@ object Day10 {
     /**
      * @return
      */
-    fun solutionTwo(text: List<String>): Int {
+    fun solutionTwo(text: List<String>): String {
         val operations = parseCommands(text)
 
         var cycleCount = 1
@@ -58,17 +58,15 @@ object Day10 {
         var currentValue = 1
 
         var solution = ""
-
         while (currentOperation < operations.size) {
             val operation = operations[currentOperation]
             operation.cycleCount -= 1
 
-            println("cycle $cycleCount - startingValue $currentValue")
-//            if (cycleCount in listOf(currentValue -1, currentValue, currentValue +1)) {
-//                solution += "#"
-//            } else {
-//                solution += "."
-//            }
+            solution += if ((cycleCount -1) % 40 in listOf(currentValue -1, currentValue, currentValue +1)) {
+                "#"
+            } else {
+                "."
+            }
 
             if (operation.cycleCount < 1) {
                 if (operation is Operation.Add) {
@@ -80,11 +78,11 @@ object Day10 {
             cycleCount += 1
         }
 
-        solution.windowed(40).forEach {
+        solution.windowed(40, 40).forEach {
             println(it)
         }
 
-        return -1
+        return solution
     }
 
     private fun parseCommands(text: List<String>): List<Operation> {
