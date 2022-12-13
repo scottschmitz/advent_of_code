@@ -17,13 +17,13 @@ internal class Day09Test {
     fun testSolutionOne() {
         val solutionOne = Day09.solutionOne(sampleText)
 
-        assertEquals(-1, solutionOne)
+        assertEquals(15, solutionOne)
     }
 
     @Test
     fun testSolutionTwo() {
         val solutionTwo = Day09.solutionTwo(sampleText)
 
-        assertEquals(-1, solutionTwo)
+        assertEquals(1134, solutionTwo)
     }
 }

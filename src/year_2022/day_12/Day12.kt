@@ -155,7 +155,6 @@ object Day12 {
             possibleOtherPositions.add(Position(position.row, position.column + 1))
         }
 
-
         return possibleOtherPositions
     }
 }

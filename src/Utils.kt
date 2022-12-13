@@ -28,3 +28,19 @@ fun Char.toAlphabetPosition(): Int {
         else -> code - 'A'.code + 27
     }
 }
+
+fun IntRange.product(other: IntRange) = this.flatMap { i ->
+    other.map {
+        j -> i to j
+    }
+}
+
+/**
+ * Return all the Positions that would be touching the position
+ */
+fun Pair<Int, Int>.neighbors() = listOf(
+        this.first - 1 to this.second,
+        this.first + 1 to this.second,
+        this.first     to this.second - 1,
+        this.first     to this.second + 1,
+)
