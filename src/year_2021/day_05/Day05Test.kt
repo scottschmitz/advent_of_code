@@ -29,6 +29,6 @@ internal class Day05Test {
     fun testSolutionTwo() {
         val solutionTwo = Day05.solutionTwo(sampleText)
 
-        assertEquals(-1, solutionTwo)
+        assertEquals(12, solutionTwo)
     }
 }
