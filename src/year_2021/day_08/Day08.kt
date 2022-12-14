@@ -66,14 +66,6 @@ object Day08 {
             // bottom left is just whats left over
             val bottomLeft = remainingLetters.first { it != bottom }
 
-//            println("top $top")
-//            println("topLeft $topLeft")
-//            println("topRight $topRight")
-//            println("middle $middle")
-//            println("bottomLeft $bottomLeft")
-//            println("bottomRight $bottomRight")
-//            println("bottom $bottom")
-
             val one = listOf(topRight, bottomRight)
             val two = listOf(top, topRight, middle, bottomLeft, bottom)
             val three = listOf(top, topRight, middle, bottomRight, bottom)

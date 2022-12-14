@@ -40,7 +40,6 @@ object Day14 {
         val sandLocations = mutableSetOf<Pair<Int, Int>>()
 
         while (true) {
-            println("dropping sand ${sandLocations.size + 1}")
             when (val dropSandResult = dropSandToFloor(sandStartingPosition, rockLocations, sandLocations)) {
                 is DropSandResult.Infinity -> {
                     sandLocations.add(sandStartingPosition)

@@ -24,7 +24,6 @@ object Day05 {
             }
         }
 
-        println(stacks)
         var message = ""
         stacks.forEach { (_, containers) ->
             message += containers.last()
@@ -51,7 +50,6 @@ object Day05 {
             toStack.addAll(toMove.reversed())
         }
 
-        println(stacks)
         var message = ""
         stacks.forEach { (_, containers) ->
             message += containers.last()

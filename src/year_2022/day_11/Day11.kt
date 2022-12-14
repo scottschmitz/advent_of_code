@@ -77,12 +77,6 @@ object Day11 {
                     monkeys.first { it.id == nextMonkey }.items.add(newWorry)
                 }
             }
-
-//            println("== After round $round")
-//            monkeys.forEach { monkey ->
-//                println("Monkey ${monkey.id}: ${monkey.items}")
-//            }
-//            println("\n\n")
         }
 
         val inspections = monkeys
