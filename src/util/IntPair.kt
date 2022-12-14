@@ -2,12 +2,19 @@ package util
 /**
  * Return all the Positions that would be touching the position
  */
-fun Pair<Int, Int>.neighbors() = listOf(
-        this.first - 1 to this.second,
-        this.first + 1 to this.second,
-        this.first     to this.second - 1,
-        this.first     to this.second + 1,
-)
+fun Pair<Int, Int>.neighbors(includeDiagonals: Boolean = false) = buildList {
+    add(this@neighbors.first - 1 to this@neighbors.second)
+    add(this@neighbors.first + 1 to this@neighbors.second)
+    add(this@neighbors.first     to this@neighbors.second - 1)
+    add(this@neighbors.first     to this@neighbors.second + 1)
+
+    if (includeDiagonals) {
+        add(this@neighbors.first - 1 to this@neighbors.second - 1)
+        add(this@neighbors.first - 1 to this@neighbors.second + 1)
+        add(this@neighbors.first + 1 to this@neighbors.second - 1)
+        add(this@neighbors.first + 1 to this@neighbors.second + 1)
+    }
+}
 
 /***
  * Return all the Positions between two positions (inclusive)
