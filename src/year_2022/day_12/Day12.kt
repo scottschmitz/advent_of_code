@@ -1,7 +1,7 @@
 package year_2022.day_12
 
 import readInput
-import toAlphabetPosition
+import util.toAlphabetPosition
 
 data class Position(
     val row: Int,

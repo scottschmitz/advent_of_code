@@ -1,10 +1,10 @@
 package year_2022.day_14
 
-import connect
-import down
-import downLeft
-import downRight
 import readInput
+import util.connect
+import util.down
+import util.downLeft
+import util.downRight
 
 sealed class DropSandResult {
     object Infinity: DropSandResult()

@@ -1,40 +1,4 @@
-import java.io.File
-import java.math.BigInteger
-import java.security.MessageDigest
-
-/**
- * Reads lines from the given input txt file.
- */
-fun readInput(name: String) = File("src", name)
-    .readLines()
-
-/**
- * Converts string to md5 hash.
- */
-fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray()))
-    .toString(16)
-    .padStart(32, '0')
-
-/**
- * Identifies the position in the alphabet starting at 'a' = 1 and 'A' = 27
- */
-fun Char.toAlphabetPosition(): Int {
-    if (!isLetter()) {
-        throw IllegalArgumentException("Passed in non letter.")
-    }
-
-    return when (isLowerCase()) {
-        true -> code - 'a'.code + 1
-        else -> code - 'A'.code + 27
-    }
-}
-
-fun IntRange.product(other: IntRange) = this.flatMap { i ->
-    other.map {
-        j -> i to j
-    }
-}
-
+package util
 /**
  * Return all the Positions that would be touching the position
  */
@@ -67,22 +31,57 @@ fun Pair<Int, Int>.connect(other: Pair<Int, Int>): List<Pair<Int, Int>> {
 }
 
 /***
- * Return the Positions below the position
+ * Return the Position below the position
  */
 fun Pair<Int, Int>.down(): Pair<Int, Int> {
     return first to second + 1
 }
 
 /***
- * Return the Positions below the position and to the left
+ * Return the Position below the position and to the left
  */
 fun Pair<Int, Int>.downLeft(): Pair<Int, Int> {
     return first - 1 to second + 1
 }
 
 /***
- * Return the Positions below the position and to the left
+ * Return the Position below the position and to the left
  */
 fun Pair<Int, Int>.downRight(): Pair<Int, Int> {
     return first + 1 to second + 1
+}
+
+/***
+ * Return the Position above the position
+ */
+fun Pair<Int, Int>.up(): Pair<Int, Int> {
+    return first to second - 1
+}
+
+/***
+ * Return the Position above the position and to the left
+ */
+fun Pair<Int, Int>.upLeft(): Pair<Int, Int> {
+    return first - 1 to second - 1
+}
+
+/***
+ * Return the Position above the position and to the left
+ */
+fun Pair<Int, Int>.upRight(): Pair<Int, Int> {
+    return first + 1 to second - 1
+}
+
+/***
+ * Return the Position to the left
+ */
+fun Pair<Int, Int>.left(): Pair<Int, Int> {
+    return first - 1 to second
+}
+
+/***
+ * Return the Position to the right
+ */
+fun Pair<Int, Int>.right(): Pair<Int, Int> {
+    return first + 1 to second
 }

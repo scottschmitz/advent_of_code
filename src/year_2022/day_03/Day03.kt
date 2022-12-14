@@ -1,7 +1,7 @@
 package year_2022.day_03
 
 import readInput
-import toAlphabetPosition
+import util.toAlphabetPosition
 
 data class Rucksack(
     val compartmentOne: List<Char>,

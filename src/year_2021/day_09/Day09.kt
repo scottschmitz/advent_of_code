@@ -1,8 +1,8 @@
 package year_2021.day_09
 
-import neighbors
-import product
 import readInput
+import util.neighbors
+import util.product
 
 object Day09 {
 
