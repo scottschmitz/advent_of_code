@@ -1,4 +1,9 @@
 package util
+
+import kotlin.math.abs
+
+typealias Point = Pair<Int, Int>
+
 /**
  * Return all the Positions that would be touching the position
  */
@@ -35,6 +40,31 @@ fun Pair<Int, Int>.connect(other: Pair<Int, Int>): List<Pair<Int, Int>> {
     } else {
         throw IllegalArgumentException("Only horizontal and vertical supported.")
     }
+}
+
+/**
+ * return the Manhattan distance (taxicab geometry) between 2 points
+ */
+fun Pair<Int, Int>.manhattanDistance(to: Pair<Int, Int>): Int {
+    return abs(this.first - to.first) + abs(this.second - to.second)
+}
+
+fun Pair<Int, Int>.pointsWithinRadius(radius: Int, minValue: Int, maxValue: Int): List<Pair<Int, Int>> {
+    val withinRadius = mutableListOf<Pair<Int, Int>>()
+    val minX = maxOf(minValue, this.first - radius)
+    val maxX = minOf(maxValue, this.first + radius)
+
+    for (col in minX ..  maxX) {
+        val rowOffset = radius - abs(this.first - col)
+
+        val minY = this.second - rowOffset
+        val maxY = this.second + rowOffset
+        for (row in minY .. maxY) {
+            withinRadius.add(col to row)
+        }
+    }
+
+    return withinRadius
 }
 
 /***
