@@ -40,7 +40,6 @@ object Day16 {
      */
     fun solutionTwo(text: List<String>): Int {
         score = 0
-        score = 0
         val valvesMap = parseText(text)
         val shortestPaths = floydWarshall(
                 shortestPaths = valvesMap.values.associate { it.name to it.toValves.associateWith { 1 }.toMutableMap() }.toMutableMap(),
@@ -72,7 +71,6 @@ object Day16 {
     ) {
         score = max(score, currScore)
 
-
         for ((valve, dist) in shortestPaths[currentValve]!!) {
             if (!visited.contains(valve) && time + dist + 1 < totalTime) {
                 depthFirstSearch(
@@ -87,13 +85,13 @@ object Day16 {
             }
         }
 
-        if(hasElephantHelper) {
+        if (hasElephantHelper) {
             depthFirstSearch(
                 currScore = currScore,
                 currentValve = "AA",
                 visited = visited,
                 time = 0,
-                totalTime = 26,
+                totalTime = totalTime,
                 valves = valves,
                 shortestPaths = shortestPaths,
                 hasElephantHelper = false
