@@ -108,7 +108,9 @@ class Day23(text: List<String>) {
             }
 
             // if no one needs to move then we alllll good
-            println("Moving ${proposals.count { it.first != it.second }}")
+            if (debug) {
+                println("Round $round - moving ${proposals.count { it.first != it.second }} elves.")
+            }
             if (proposals.all { it.first == it.second }) {
                 break
             }
