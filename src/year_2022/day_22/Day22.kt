@@ -61,7 +61,7 @@ class Day22(text: List<String>) {
     fun solutionOne(): Int {
         var currentFacing = Facing.RIGHT
         var currPoint = board
-                .filter { it.key.second == 0 }
+                .filter { it.key.second == 1 }
                 .filter { it.value }
                 .keys
                 .minBy { it.first }
@@ -105,16 +105,16 @@ class Day22(text: List<String>) {
         }
 
         // The final password is the sum of 1000 times the row, 4 times the column, and the facing.
-        return (1_000 * (currPoint.second + 1)) + (4 * (currPoint.first + 1) ) + currentFacing.value
+        return (1_000 * (currPoint.second)) + (4 * (currPoint.first) ) + currentFacing.value
     }
 
     /**
      * @return
      */
-    fun solutionTwo(): Int {
+    fun solutionTwo(faceSize: Int): Int {
         var currentFacing = Facing.RIGHT
         var currPoint = board
-                .filter { it.key.second == 0 }
+                .filter { it.key.second == 1 }
                 .filter { it.value }
                 .keys
                 .minBy { it.first }
@@ -138,13 +138,17 @@ class Day22(text: List<String>) {
                             Facing.LEFT ->  currPoint.first - 1 to currPoint.second
                         }
 
-                        if (whichFace(potentialPoint) != whichFace(currPoint)) {
-                            val result = wrapCubeToPointAndFacing(currPoint, currentFacing)
+                        if (whichFace(potentialPoint, faceSize) != whichFace(currPoint, faceSize)) {
+                            val result = wrapCubeToPointAndFacing(faceSize, currPoint, currentFacing)
                             println("Wrapping cube... " +
-                                    "from ${whichFace((currPoint))} to ${whichFace(result.first)}" +
+                                    "from ${whichFace(currPoint, faceSize)} to ${whichFace(result.first, faceSize)}" +
                                     "... was heading $currentFacing but now facing ${result.second}")
                             potentialPoint = result.first
                             potentialFacing = result.second
+                        }
+
+                        if (potentialPoint !in board) {
+                            throw IllegalArgumentException("Moving to unknown point!!? $potentialPoint")
                         }
 
                         // if the spot is open, move there (it should exist in the map)
@@ -159,8 +163,11 @@ class Day22(text: List<String>) {
             }
         }
 
+        // 117027 is too low
+        // 150010 is too high
+
         // The final password is the sum of 1000 times the row, 4 times the column, and the facing.
-        return (1_000 * (currPoint.second + 1)) + (4 * (currPoint.first + 1) ) + currentFacing.value
+        return (1_000 * (currPoint.second)) + (4 * (currPoint.first) ) + currentFacing.value
     }
 
     private fun parseText(text: List<String>): Pair<BoardPositions, List<Movement>> {
@@ -169,8 +176,8 @@ class Day22(text: List<String>) {
             .flatMapIndexed { row, line ->
                 line.mapIndexedNotNull { col, char ->
                     when (char) {
-                        '.' -> Point(col, row) to true
-                        '#' -> Point(col, row) to false
+                        '.' -> Point(col + 1, row + 1) to true
+                        '#' -> Point(col + 1, row + 1) to false
                         else -> { null }
                     }
                 }
@@ -248,65 +255,125 @@ class Day22(text: List<String>) {
      * Face 4 = ( 50, 100) -> ( 99, 149)
      * Face 5 = (  0, 150) -> ( 49, 199)
      */
-    private fun whichFace(point: Point): Int {
+    private fun whichFace(point: Point, faceSize: Int): Int {
         return when {
-            point.first < 100 && point.second < 50 -> 0
-            point.second < 50 -> 1
-            point.second < 100 -> 2
-            point.first < 50 && point.second < 150 -> 3
-            point.second < 150 -> 4
-            else -> 5
+            point.first in  (faceSize + 1)..(faceSize * 2) && point.second in   1.. faceSize -> 0
+            point.first in ((faceSize * 2) + 1)..(faceSize * 3) && point.second in   1.. faceSize -> 1
+            point.first in  (faceSize + 1)..(faceSize * 2) && point.second in  (faceSize + 1)..(faceSize * 2) -> 2
+            point.first in   1.. (faceSize) && point.second in (faceSize * 2) + 1..(faceSize * 3) -> 3
+            point.first in (faceSize + 1)..(faceSize * 2) && point.second in (faceSize * 2) + 1 .. (faceSize * 3) -> 4
+            point.first in 1..(faceSize) && point.second in (faceSize * 3) + 1 .. (faceSize * 4) -> 5
+            else -> -1
         }
     }
 
-    private fun wrapCubeToPointAndFacing(point: Point, currentFacing: Facing): Pair<Point, Facing> {
-        return when(whichFace(point)) {
+    private fun wrapCubeToPointAndFacing(faceSize: Int, point: Point, currentFacing: Facing): Pair<Point, Facing> {
+        return when(whichFace(point, faceSize)) {
             0 -> {
                 when (currentFacing) {
+                    Facing.UP -> {
+                        val col = 1 // left edge of Face 5
+                        val row = point.first + (2 * faceSize) // move down 2 faces and then continue on a side turn
+                        (col to row) to Facing.RIGHT // 0 -> 5 is on a sideways turn
+                    }
                     Facing.RIGHT -> point.right() to Facing.RIGHT // continue on Face 1
                     Facing.DOWN -> point.down() to Facing.DOWN // continue on Face 2
-                    Facing.LEFT -> (0 to 149 - point.second) to Facing.RIGHT // move to Face 3... Facing has now changed
-                    Facing.UP -> (0 to 149 + point.first - 50) to Facing.RIGHT // move to Face 5... Facing has now changed
+                    Facing.LEFT -> {
+                        val col = 1 // left edge of Face 3
+                        val row = (faceSize - point.second) + (2 * faceSize) + 1 // move down 2 faces and then invert the Y (upside down)
+                        (col to row) to Facing.RIGHT // 0 -> 3 is upside down so flip the facing
+                    }
                 }
             }
             1 -> {
                 when (currentFacing) {
-                    Facing.RIGHT -> (99 to 149 - point.second) to Facing.LEFT // Continue on 4
-                    Facing.DOWN -> (99 to point.first - 50) to Facing.LEFT
+                    Facing.UP -> {
+                        val col = point.first - (faceSize * 2)
+                        val row = (faceSize * 4) // very bottom of last face
+                        (col to row) to Facing.UP
+                    }
+                    Facing.RIGHT -> {
+                        val col = (faceSize * 2) // right edge of Face 4
+                        val row = (faceSize * 2) + abs(faceSize - point.second) + 1
+                        (col to row) to Facing.LEFT
+                    }
+                    Facing.DOWN -> {
+                        val col = (faceSize * 2) //right edge of
+                        val row = (point.first - faceSize) // to the right edge of 2
+                        (col to row) to Facing.LEFT
+                    }
                     Facing.LEFT -> point.left() to Facing.LEFT
-                    Facing.UP -> (point.first - 100 to 149) to Facing.UP
                 }
             }
             2 -> {
                 when (currentFacing) {
-                    Facing.RIGHT -> (point.second + 50 to 49) to Facing.UP // 1
-                    Facing.DOWN -> point.down() to Facing.DOWN // 0
-                    Facing.LEFT -> (point.second - 50 to 100) to Facing.DOWN // 3
-                    Facing.UP -> point.up() to Facing.UP // 4
+                    Facing.UP -> point.up() to Facing.UP // Continue up on Face 0
+                    Facing.RIGHT -> {
+                        val col = (faceSize * 2) + (point.second - faceSize)
+                        val row = faceSize
+                        (col to row) to Facing.UP // Rotate to up on Face 1
+                    }
+                    Facing.DOWN -> point.down() to Facing.DOWN // Continue down on Face 4
+                    Facing.LEFT -> {
+                        val col = point.second - faceSize
+                        val row = (faceSize * 2) + 1
+                        (col to row) to Facing.DOWN // Rotate to down 3
+                    }
+
                 }
             }
             3 -> {
                 when (currentFacing) {
-                    Facing.RIGHT -> point.right() to Facing.RIGHT // 4
-                    Facing.DOWN -> point.down() to Facing.DOWN // 5
-                    Facing.LEFT -> (50 to abs(point.second - 149)) to Facing.RIGHT // 0
-                    Facing.UP -> (50 to 50 + point.first) to Facing.RIGHT // 2
+                    Facing.UP -> {
+                        val col = (faceSize + 1)
+                        val row = (faceSize + point.first)
+                        (col to row) to Facing.RIGHT // Right on Face 2
+                    }
+                    Facing.RIGHT -> point.right() to Facing.RIGHT // Continue right on Face 4
+                    Facing.DOWN -> point.down() to Facing.DOWN // Continue down on Face 5
+                    Facing.LEFT -> {
+                        val col = faceSize + 1
+                        val row = faceSize - (point.second - (faceSize * 2)) + 1
+                        (col to row) to Facing.RIGHT // Rotate to right on Face 0
+                    }
+
                 }
             }
             4 -> {
                 when (currentFacing) {
-                    Facing.RIGHT -> (149 to abs(point.second - 149)) to Facing.LEFT // 1
-                    Facing.DOWN -> (49 to 100 + point.first) to Facing.LEFT // 5
-                    Facing.LEFT -> point.left() to Facing.LEFT // 3
-                    Facing.UP -> point.up() to Facing.UP //2
+                    Facing.UP -> point.up() to Facing.UP // Continue up on Face 2
+                    Facing.RIGHT -> {
+                        val col = faceSize * 3
+                        val row = faceSize - (point.second - (faceSize * 2)) + 1
+                        (col to row) to Facing.LEFT // Rotate to left on 1
+                    }
+                    Facing.DOWN -> {
+                        val col = faceSize
+                        val row = (faceSize * 2) + point.first
+                        (col to row) to Facing.LEFT // Rotate to left on Face 5
+                    }
+                    Facing.LEFT -> point.left() to Facing.LEFT // Continue left on Face 3
+
                 }
             }
             5 -> {
                 when (currentFacing) {
-                    Facing.RIGHT -> (point.second - 199 to 149) to Facing.UP // 4
-                    Facing.DOWN -> (point.first - 100 to 0) to Facing.DOWN // 1
-                    Facing.LEFT -> (point.second - 100 to 0) to Facing.DOWN // 0
-                    Facing.UP -> point.up() to Facing.UP // 3
+                    Facing.UP -> point.up() to Facing.UP // Continue up on Face 3
+                    Facing.RIGHT -> {
+                        val col = point.second - (faceSize * 2)
+                        val row = faceSize * 3
+                        (col to row) to Facing.UP // Rotate to up on Face 4
+                    }
+                    Facing.DOWN -> {
+                        val col = point.first + (faceSize * 2)
+                        val row = 1
+                        (col to row) to Facing.DOWN // Rotate to down on Face 1
+                    }
+                    Facing.LEFT -> {
+                        val col = point.second - (faceSize * 2)
+                        val row = 1
+                        (col to row) to Facing.DOWN // Rotate to down on Face 0
+                    }
                 }
             }
             else -> throw IllegalArgumentException("Unknown face")
@@ -319,5 +386,5 @@ fun main() {
     val day22 = Day22(inputText)
 
 //    println("Solution 1: ${day22.solutionOne()}")
-    println("Solution 2: ${day22.solutionTwo()}")
+    println("Solution 2: ${day22.solutionTwo(50)}")
 }
