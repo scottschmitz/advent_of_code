@@ -140,9 +140,6 @@ class Day22(text: List<String>) {
 
                         if (whichFace(potentialPoint, faceSize) != whichFace(currPoint, faceSize)) {
                             val result = wrapCubeToPointAndFacing(faceSize, currPoint, currentFacing)
-                            println("Wrapping cube... " +
-                                    "from ${whichFace(currPoint, faceSize)} to ${whichFace(result.first, faceSize)}" +
-                                    "... was heading $currentFacing but now facing ${result.second}")
                             potentialPoint = result.first
                             potentialFacing = result.second
                         }
@@ -157,14 +154,9 @@ class Day22(text: List<String>) {
                             currentFacing = potentialFacing
                         }
                     }
-
-//                    println("Arrived at $currPoint")
                 }
             }
         }
-
-        // 117027 is too low
-        // 150010 is too high
 
         // The final password is the sum of 1000 times the row, 4 times the column, and the facing.
         return (1_000 * (currPoint.second)) + (4 * (currPoint.first) ) + currentFacing.value
@@ -385,6 +377,6 @@ fun main() {
     val inputText = readInput("year_2022/day_22/Day22.txt")
     val day22 = Day22(inputText)
 
-//    println("Solution 1: ${day22.solutionOne()}")
+    println("Solution 1: ${day22.solutionOne()}")
     println("Solution 2: ${day22.solutionTwo(50)}")
 }
