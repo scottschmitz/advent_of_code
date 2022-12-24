@@ -4,6 +4,16 @@ import kotlin.math.abs
 
 typealias Point = Pair<Int, Int>
 
+operator fun Pair<Int, Int>.plus(other: Point): Point = Point(this.first + other.first, this.second + other.second)
+
+fun Pair<Int, Int>.isWithin(bounds: Bounds): Boolean = isWithinX(bounds) && isWithinY(bounds)
+
+fun Pair<Int, Int>.isWithinX(bounds: Bounds): Boolean =
+        this.first >= bounds.min.first && this.first <= bounds.max.first
+
+fun Pair<Int, Int>.isWithinY(bounds: Bounds): Boolean =
+        this.second >= bounds.min.second && this.second <= bounds.max.second
+
 /**
  * Return all the Positions that would be touching the position
  */
@@ -121,4 +131,19 @@ fun Pair<Int, Int>.left(): Pair<Int, Int> {
  */
 fun Pair<Int, Int>.right(): Pair<Int, Int> {
     return first + 1 to second
+}
+
+fun List<Point>.onPointsInRectangle(onPoint: (Point) -> Unit, onRowChange: (Int) -> Unit) {
+    val minX = minOfOrNull { it.first }!!
+    val maxX = maxOfOrNull { it.first }!!
+    val minY = minOfOrNull { it.second }!!
+    val maxY = maxOfOrNull { it.second }!!
+
+    for (row in minY..maxY) {
+        onRowChange(row)
+
+        for (col in minX..maxX) {
+            onPoint(col to row)
+        }
+    }
 }
