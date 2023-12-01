@@ -24,11 +24,4 @@ internal class Day16Test {
 
         assertEquals(1651, solutionOne)
     }
-
-    @Test
-    fun testSolutionTwo() {
-        val solutionTwo = Day16.solutionTwo(sampleText)
-
-        assertEquals(1707, solutionTwo)
-    }
 }

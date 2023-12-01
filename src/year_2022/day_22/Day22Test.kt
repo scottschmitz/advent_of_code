@@ -32,7 +32,7 @@ internal class Day22Test {
     @Test
     // This test intentionally uses ACTUAL data as the sample text had cube faces in different locations...
     fun testSolutionTwo() {
-        val inputText = readInput("year_2022/day_22/Day22.txt")
+        val inputText = readInput("year_2022/day_22/Day22.txt_exception")
         val solutionOne = Day22(inputText).solutionTwo(50)
 
         assertEquals(144012, solutionOne)

@@ -374,7 +374,7 @@ class Day22(text: List<String>) {
 }
 
 fun main() {
-    val inputText = readInput("year_2022/day_22/Day22.txt")
+    val inputText = readInput("year_2022/day_22/Day22.txt_exception")
     val day22 = Day22(inputText)
 
     println("Solution 1: ${day22.solutionOne()}")
