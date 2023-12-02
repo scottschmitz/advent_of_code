@@ -24,11 +24,9 @@ object Day01 {
                     break
                 }
             }
-
-            println("$first$last")
-            "$first$last"
+            "$first$last".toInt()
         }
-        return values.sumOf { it.toInt() }
+        return values.sum()
     }
 
     /**
@@ -46,9 +44,6 @@ object Day01 {
                 .replace("eight", "eig8ht")
                 .replace("nine", "nin9e")
         }
-
-        println(calibrationValues)
-        println(cleaned)
 
         return solutionOne(cleaned)
     }
