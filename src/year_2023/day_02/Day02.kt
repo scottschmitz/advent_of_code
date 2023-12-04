@@ -1,7 +1,12 @@
 package year_2023.day_02
 
 import readInput
-import kotlin.math.max
+
+data class Game(
+  val round: Int,
+  var isPossible: Boolean,
+  var power: Int = 0
+)
 
 data class GameCube(
     val name: String,
@@ -18,28 +23,30 @@ object Day02 {
      *
      */
     fun solutionOne(text: List<String>): Int {
-      val cubes = listOf(
-        GameCube("red", 12),
-        GameCube("green", 13),
-        GameCube("blue", 14),
-      )
-
       var total = 0
       text.forEach { line ->
         val halves = line.split(":")
-        val gameNumber = halves[0].split(" ")[1].toInt()
 
         val pulls = halves[1].replace(";", ",").split(", ")
         val possible = pulls.none { pull ->
           val split = pull.trim().split(" ")
           val count = split[0].toInt()
-          val color = split[1]
 
-          cubes.first { it.name == color }.maxCount < count
+          when (split[1]) {
+            "red" -> count > 12
+            "green" -> count > 13
+            "blue" -> count > 14
+            else -> true
+          }
         }
 
+        val game = Game(
+          round = halves[0].split(" ")[1].toInt(),
+          isPossible = possible
+        )
+
         if (possible) {
-          total += gameNumber
+          total += game.round
         }
       }
 
@@ -62,7 +69,6 @@ object Day02 {
         cubes.forEach { it.reset() }
 
         val halves = line.split(":")
-        val gameNumber = halves[0].split(" ")[1].toInt()
 
         val pulls = halves[1].replace(";", ",").split(", ")
         pulls.forEach { pull ->
