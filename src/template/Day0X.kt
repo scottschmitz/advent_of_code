@@ -20,8 +20,6 @@ object Day0X {
 
 fun main() {
     val text = readInput("year_202X/day_0X/Day0X.txt")
-    Thread.sleep(1000)
-
 
     val solutionOne = Day0X.solutionOne(text)
     println("Solution 1: $solutionOne")
