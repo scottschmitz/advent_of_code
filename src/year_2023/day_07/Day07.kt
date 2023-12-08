@@ -1,7 +1,6 @@
 package year_2023.day_07
 
 import readInput
-import kotlin.math.max
 
 enum class HandType(val strength: Int) {
     FiveOfAKind(6),
@@ -103,7 +102,7 @@ data class Hand(
     }
 }
 
-object Day06 {
+object Day07 {
     /**
      *
      */
@@ -148,9 +147,9 @@ object Day06 {
 fun main() {
     val text = readInput("year_2023/day_07/Day07.txt")
 
-    val solutionOne = Day06.solutionOne(text)
+    val solutionOne = Day07.solutionOne(text)
     println("Solution 1: $solutionOne")
 
-    val solutionTwo = Day06.solutionTwo(text)
+    val solutionTwo = Day07.solutionTwo(text)
     println("Solution 2: $solutionTwo")
 }
