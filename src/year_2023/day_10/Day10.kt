@@ -53,10 +53,10 @@ object Day10 {
     /**
      *
      */
-    fun solutionTwo(text: List<String>): Int {
+    fun solutionTwo(text: List<String>): Long {
         val field = parseField(text)
         val path = calculateLoopFromStart(field)
-        return path.area()
+        return path.calculateArea()
     }
 
     private fun parseField(text: List<String>): Field {

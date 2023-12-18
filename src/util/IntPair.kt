@@ -3,6 +3,8 @@ package util
 import kotlin.math.abs
 
 typealias Point = Pair<Int, Int>
+fun Point.x() = this.first
+fun Point.y() = this.second
 
 operator fun Pair<Int, Int>.plus(other: Point): Point = Point(this.first + other.first, this.second + other.second)
 

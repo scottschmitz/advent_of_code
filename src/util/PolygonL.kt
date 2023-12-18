@@ -2,9 +2,8 @@ package util
 
 import kotlin.math.abs
 
-
-fun List<Point>.calculateArea(includePerimeter: Boolean = false): Long {
-  fun gaussArea(points: List<Point>): Long {
+fun List<PointL>.calculateArea(includePerimeter: Boolean): Long {
+  fun gaussArea(points: List<PointL>): Long {
     val last = points.lastIndex
     val area = (0 until last).fold(0L) { acc, i ->
       acc + points[i].first * points[i + 1].second - points[i + 1].first * points[i].second
@@ -13,8 +12,8 @@ fun List<Point>.calculateArea(includePerimeter: Boolean = false): Long {
     return abs(area) / 2
   }
 
-  var permimeter = 0
-  var currentPoint = 0 to 0
+  var permimeter = 0L
+  var currentPoint = 0L to 0L
   this.forEach { point ->
     permimeter += currentPoint.manhattanDistance(point)
     currentPoint = point
@@ -28,7 +27,7 @@ fun List<Point>.calculateArea(includePerimeter: Boolean = false): Long {
   }
 }
 
-fun List<Point>.display() {
+fun List<PointL>.display() {
   val minX = minBy { it.first }.first
   val maxX = maxBy { it.first }.first
   val minY = minBy { it.second }.second
