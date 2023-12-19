@@ -3,7 +3,7 @@ package template
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-internal class Day0XTest {
+internal class DayXXTest {
 
     private val sampleText = listOf(
         "---",
@@ -12,14 +12,14 @@ internal class Day0XTest {
 
     @Test
     fun testSolutionOne() {
-        val solutionOne = Day0X.solutionOne(sampleText)
+        val solutionOne = DayXX.solutionOne(sampleText)
 
         assertEquals(-1, solutionOne)
     }
 
     @Test
     fun testSolutionTwo() {
-        val solutionTwo = Day0X.solutionTwo(sampleText)
+        val solutionTwo = DayXX.solutionTwo(sampleText)
 
         assertEquals(-1, solutionTwo)
     }
