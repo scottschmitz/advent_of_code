@@ -19,7 +19,7 @@ object DayXX {
 }
 
 fun main() {
-    val text = readInput("year_202X/day_XX/DayXX.txt")
+    val text = readInput("year_202X/day_XX/Day20.txt")
 
     val solutionOne = DayXX.solutionOne(text)
     println("Solution 1: $solutionOne")
