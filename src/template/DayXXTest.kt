@@ -7,7 +7,6 @@ internal class DayXXTest {
 
     private val sampleText = listOf(
         "---",
-        "---",
     )
 
     @Test
