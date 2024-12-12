@@ -1,5 +1,8 @@
 package util
 
+fun List<String>.toGrid(): List<List<Char>> {
+  return map { it.toList() }
+}
 
 fun List<String>.positionOfFirst(char: Char): Point {
   val row = indexOfFirst { it.contains(char) }

@@ -38,4 +38,17 @@ enum class Direction(val delta: Point) {
             NORTH_WEST -> NORTH_EAST
         }
     }
+
+    fun turn90CounterClockwise(): Direction {
+        return when (this) {
+            NORTH -> WEST
+            NORTH_EAST -> NORTH_WEST
+            EAST -> NORTH
+            SOUTH_EAST -> NORTH_EAST
+            SOUTH -> EAST
+            SOUTH_WEST -> SOUTH_EAST
+            WEST -> SOUTH
+            NORTH_WEST -> SOUTH_WEST
+        }
+    }
 }
