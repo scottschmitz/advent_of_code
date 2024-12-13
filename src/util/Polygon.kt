@@ -64,17 +64,13 @@ fun List<Point>.calculateNumberOfSides(): Int {
     }
   }
 
-  val seenBorders = mutableSetOf<Point>()
-  val uniqueBorders = mutableListOf<List<Point>>()
+  val requiredOutside = border.flatMap { it.neighbors().filter { !pointsSet.contains(it) } }.toSet()
+  val seenOutside = mutableSetOf<Point>()
   var totalEdges = 0
 
-  //while loop until seenBorders contains everything in border
-  while (seenBorders.size < border.size) {
-    val firstNotSeen = border.first { it !in seenBorders }
-
-    val thisBorder = mutableSetOf<Point>()
-    thisBorder.add(firstNotSeen)
-    val outsideStartingPoint = firstNotSeen.neighbors().first { it !in pointsSet }
+  //while loop until we have seen all of the points touching but not within our polygon
+  while (seenOutside.size < requiredOutside.size) {
+    val outsideStartingPoint = requiredOutside.first { it !in seenOutside }
     val initialDirection = when {
       outsideStartingPoint.plus(Direction.NORTH.delta) in border -> Direction.WEST
       outsideStartingPoint.plus(Direction.SOUTH.delta) in border -> Direction.EAST
@@ -85,12 +81,14 @@ fun List<Point>.calculateNumberOfSides(): Int {
     var changesOfDirection = 0
     var currentPoint = outsideStartingPoint
     var currentDirection = initialDirection
-    while (changesOfDirection < 4 || currentPoint != outsideStartingPoint) {
+    seenOutside.add(currentPoint)
+
+    val thisThing = mutableListOf<Point>()
+    while (changesOfDirection < 4 || !(currentPoint == outsideStartingPoint && currentDirection == initialDirection)) {
       val nextPoint = currentPoint.plus(currentDirection.delta)
       if (nextPoint in border) {
         currentDirection = currentDirection.turn90CounterClockwise()
         changesOfDirection += 1
-        thisBorder.add(nextPoint)
       } else if (nextPoint.plus(currentDirection.turn90Clockwise().delta) !in border) {
         // we are at a corner and need to turn and move forward to catch the side again
         currentDirection = currentDirection.turn90Clockwise()
@@ -98,17 +96,14 @@ fun List<Point>.calculateNumberOfSides(): Int {
         changesOfDirection += 1
       } else {
         currentPoint = nextPoint
-        thisBorder.add(nextPoint.plus(currentDirection.turn90Clockwise().delta))
       }
-    }
 
-    uniqueBorders.add(thisBorder.toList())
-    seenBorders.addAll(thisBorder)
+      thisThing.add(currentPoint)
+      seenOutside.add(currentPoint)
+    }
     totalEdges += changesOfDirection
   }
 
-  uniqueBorders.forEach { println(it) }
-  println("---")
   return totalEdges
 }
 

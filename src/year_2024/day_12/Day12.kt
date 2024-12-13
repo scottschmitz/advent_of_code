@@ -51,8 +51,7 @@ object Day12 {
       .map { garden ->
         val area = garden.size
         val sides = garden.toList().calculateNumberOfSides()
-
-        println("Area: $area, Sides: $sides")
+//        println("Letter: ${grid.get(garden.first())} Area: $area, Sides: $sides = Total: ${area * sides}")
         area to sides
       }
       .sumOf { (area, externalEdges) -> area * externalEdges }
@@ -80,5 +79,4 @@ fun main() {
 
   val solutionTwo = Day12.solutionTwo(text)
   println("Solution 2: $solutionTwo")
-  println("842155 is too high")
 }

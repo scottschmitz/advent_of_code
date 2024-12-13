@@ -1,6 +1,6 @@
 package year_2024.day_12
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class Day12Test {
@@ -68,13 +68,58 @@ internal class Day12Test {
   }
 
   @Test
+  fun testSolutionTwoGardensInsideTestDiagonals() {
+    val text = listOf(
+      ".....",
+      ".AAA.",
+      ".A.A.",
+      ".AA..",
+      ".A.A.",
+      ".AAA.",
+      ".....",
+    )
+    val solutionTwo = Day12.solutionTwo(text)
+    assertEquals(452, solutionTwo)
+  }
+
+  @Test
+  fun testSolutionTwoReturnToInitialLocationAndDirection() {
+    val text = listOf(
+      "............",
+      ".V..........",
+      "VVVV........",
+      "VVV.........",
+      "VVV.........",
+      "VVV.........",
+      "VVVVVV......",
+      "VVVVVV..V...",
+      ".VV.VVVVV...",
+      ".V..VVVVVV..",
+      "VVVVVVVV.V..",
+      "VVVVVVV.....",
+      "..VVVVVVV...",
+      ".VVVVVVV....",
+      ".VVVVVVV....",
+      "VVVVVVVVV...",
+      "VVVVVV......",
+      "VVVVVV......",
+      "VVVVVVV..V..",
+      "VVVVVVVVVVV.",
+      ".VVVVVVVVV..",
+      "..VVVVVVV...",
+      "....VVVVVV..",
+      "...VVV......",
+      "............",
+    )
+
+    val solutionTwo = Day12.solutionTwo(text)
+    assertEquals(19226, solutionTwo)
+  }
+
+  @Test
   fun testSolutionTwo() {
     val solutionTwo = Day12.solutionTwo(sampleText)
 
     assertEquals(1206, solutionTwo)
   }
-
-
-
-
 }
