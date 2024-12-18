@@ -38,36 +38,13 @@ object Day15 {
     val (w, directions) = parseText(text)
     val doubleWarehouse = DoubleWarehouse.fromWarehouse(w)
 
-    for (y in 0..text.size - 3) {
-      for (x in 0 until text.first().length * 2) {
-        val point = Point(x, y)
-        if (doubleWarehouse.leftRocks.contains(point)) {
-          print("[")
-        } else if (doubleWarehouse.rightRocks.contains(point)) {
-          print("]")
-        } else if (doubleWarehouse.walls.contains(point)) {
-          print("#")
-        } else if (point == doubleWarehouse.startingLocation) {
-          print('>')
-        } else {
-          print(".")
-        }
-      }
-      println()
-    }
-    println()
-
     var position = doubleWarehouse.startingLocation
     directions.forEach { direction ->
       val nextPos = position.plus(direction.delta)
       var feeler = nextPos
 
-      if (direction == Direction.SOUTH) {
-        println("stop")
-      }
-
-      val leftRocks = mutableListOf<Point>()
-      val rightRocks = mutableListOf<Point>()
+      val leftRocks = mutableSetOf<Point>()
+      val rightRocks = mutableSetOf<Point>()
 
       if (doubleWarehouse.leftRocks.contains(feeler) || doubleWarehouse.rightRocks.contains(feeler)) {
         // horizontal is eassssyyy
@@ -133,25 +110,6 @@ object Day15 {
       } else {
         position = nextPos
       }
-
-      for (y in 0 until text.size-2) {
-        for (x in 0 until text.first().length * 2) {
-          val point = Point(x, y)
-          if (doubleWarehouse.leftRocks.contains(point)) {
-            print("[")
-          } else if (doubleWarehouse.rightRocks.contains(point)) {
-            print("]")
-          } else if (doubleWarehouse.walls.contains(point)) {
-            print("#")
-          } else if (point == position) {
-            print(direction.toChar())
-          } else {
-            print(".")
-          }
-        }
-        println()
-      }
-      println()
     }
 
     val values = doubleWarehouse.leftRocks.toSet().map { rock ->
