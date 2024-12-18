@@ -26,6 +26,16 @@ enum class Direction(val delta: Point) {
     }
   }
 
+  fun toChar(): Char {
+    return when (this) {
+      NORTH -> '^'
+      EAST -> '>'
+      SOUTH -> 'v'
+      WEST -> '<'
+      else -> '?'
+    }
+  }
+
   fun turn90Clockwise(): Direction {
     return when (this) {
       NORTH -> EAST

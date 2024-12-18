@@ -39,7 +39,7 @@ object Day15 {
     val doubleWarehouse = DoubleWarehouse.fromWarehouse(w)
 
     for (y in 0..text.size - 3) {
-      for (x in 0..text.first().length * 2) {
+      for (x in 0 until text.first().length * 2) {
         val point = Point(x, y)
         if (doubleWarehouse.leftRocks.contains(point)) {
           print("[")
@@ -48,7 +48,7 @@ object Day15 {
         } else if (doubleWarehouse.walls.contains(point)) {
           print("#")
         } else if (point == doubleWarehouse.startingLocation) {
-          print("@")
+          print('>')
         } else {
           print(".")
         }
@@ -61,6 +61,10 @@ object Day15 {
     directions.forEach { direction ->
       val nextPos = position.plus(direction.delta)
       var feeler = nextPos
+
+      if (direction == Direction.SOUTH) {
+        println("stop")
+      }
 
       val leftRocks = mutableListOf<Point>()
       val rightRocks = mutableListOf<Point>()
@@ -94,7 +98,7 @@ object Day15 {
           var feelers = listOf(feeler)
           while (
             (doubleWarehouse.leftRocks.any { it in feelers } || doubleWarehouse.rightRocks.any { it in feelers })
-              && doubleWarehouse.walls.none { it in feelers }
+            && doubleWarehouse.walls.none { it in feelers }
           ) {
             val newLeftRocks = doubleWarehouse.leftRocks.filter { it in feelers }.toMutableList()
             val newRightRocks = doubleWarehouse.rightRocks.filter { it in feelers }.toMutableList()
@@ -124,13 +128,14 @@ object Day15 {
             position = nextPos
           }
         }
+      } else if (doubleWarehouse.walls.contains(nextPos)) {
+        // do nothing
       } else {
         position = nextPos
       }
 
-
-      for (y in 0..text.size-3) {
-        for (x in 0..text.first().length * 2) {
+      for (y in 0 until text.size-2) {
+        for (x in 0 until text.first().length * 2) {
           val point = Point(x, y)
           if (doubleWarehouse.leftRocks.contains(point)) {
             print("[")
@@ -139,7 +144,7 @@ object Day15 {
           } else if (doubleWarehouse.walls.contains(point)) {
             print("#")
           } else if (point == position) {
-            print("@")
+            print(direction.toChar())
           } else {
             print(".")
           }
@@ -149,9 +154,12 @@ object Day15 {
       println()
     }
 
-    return doubleWarehouse.leftRocks.sumOf { rock ->
+    val values = doubleWarehouse.leftRocks.toSet().map { rock ->
       ((100 * rock.y()) + rock.x()).toLong()
     }
+    values.sorted().forEach { println(it) }
+
+    return values.sum()
   }
 
   fun parseText(text: List<String>): Pair<Warehouse, List<Direction>> {
