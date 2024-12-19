@@ -3,193 +3,82 @@ package year_2024.day_17
 import readInput
 import util.pow
 
-class Day17(text: List<String>) {
-  val _aRegister: Long
-  var aRegister: Long
+class Day17(val text: List<String>) {
 
-  val _bRegister: Long
-  var bRegister: Long
-
-  val _cRegister: Long
-  var cRegister: Long
-  var directions: List<Long>
-
-  init {
-    _aRegister = text[0].split(": ")[1].toLong()
-    aRegister = _aRegister
-
-    _bRegister = text[1].split(": ")[1].toLong()
-    bRegister = _bRegister
-
-    _cRegister = text[2].split(": ")[1].toLong()
-    cRegister = _cRegister
-
-    directions = text[4].split(": ")[1].split(",").map { it.toLong() }
-  }
+  private var directions = text[4].split(": ")[1].split(",").map { it.toInt() }
 
   fun solutionOne(): Result {
-    var position = 0
-    val outputs = mutableListOf<Int>()
-
-    while (position < directions.size) {
-      val opcode = directions[position].toInt()
-      val operand = directions[position + 1].toInt()
-      val operandValue = when (operand) {
-        in 0..3 -> operand.toLong()
-        4 -> aRegister
-        5 -> bRegister
-        6 -> cRegister
-        else -> -1
-      }
-
-      var isJumping = false
-      when (opcode) {
-        0 -> aRegister = adv(aRegister, operandValue)
-        1 -> bRegister = bxl(bRegister, operand.toLong()) // use the literal value
-        2 -> bRegister = bst(operandValue)
-        3 -> {
-          isJumping = jnz(aRegister)
-          if (isJumping) {
-            position = operand // intentionally use the literal value
-          }
-        }
-        4 -> bRegister = bxc(bRegister, cRegister, operandValue)
-        5 -> outputs.add(out(operandValue))
-        6 -> bRegister = bdv(aRegister, operandValue)
-        7 -> cRegister = cdv(aRegister, operandValue)
-        else -> throw IllegalArgumentException("Invalid opcode")
-      }
-
-      if (!isJumping) {
-        position += 2
-      }
-    }
-
-    return Result(aRegister, bRegister, cRegister, outputs.joinToString(","))
+    val a = text[0].split(": ")[1].toLong()
+    val b = text[1].split(": ")[1].toLong()
+    val c = text[2].split(": ")[1].toLong()
+    return solve(a, b, c)
   }
 
   fun solutionTwo(): Long {
-    val originalDirections = directions.joinToString(",")
-    var i = 265_000_000_000_000L
-    while (true) {
-      println(i)
+    val initialB = text[1].split(": ")[1].toLong()
+    val initalC = text[2].split(": ")[1].toLong()
 
-      aRegister = i
-      bRegister = _bRegister
-      cRegister = _cRegister
+    fun findA(currentA: Long = 0): Long? =
+      (currentA..currentA + 8).firstNotNullOfOrNull { a ->
+        val result = solve(a, initialB, initalC)
 
-      var position = 0
-      val output = mutableListOf<Int>()
-
-      while (position < directions.size) {
-        val opcode = directions[position].toInt()
-        val operand = directions[position + 1].toInt()
-        val operandValue = when (operand) {
-          in 0..3 -> operand.toLong()
-          4 -> aRegister
-          5 -> bRegister
-          6 -> cRegister
-          else -> -1
-        }
-
-        var isJumping = false
-        when (opcode) {
-          0 -> aRegister = adv(aRegister, operandValue)
-          1 -> bRegister = bxl(bRegister, operand.toLong()) // use the literal value
-          2 -> bRegister = bst(operandValue)
-          3 -> {
-            isJumping = jnz(aRegister)
-            if (isJumping) {
-              position = operand // intentionally use the literal value
-            }
+        if (directions.takeLast(result.output.size) == result.output) {
+          if (directions == result.output) {
+            a
+          } else {
+            findA(maxOf(a shl 3, 8))
           }
-          4 -> bRegister = bxc(bRegister, cRegister, operandValue)
-          5 -> {
-            output += out(operandValue)
-            if (originalDirections.startsWith(output.joinToString(","))) {
-              break
-            }
-          }
-          6 -> bRegister = bdv(aRegister, operandValue)
-          7 -> cRegister = cdv(aRegister, operandValue)
-          else -> throw IllegalArgumentException("Invalid opcode")
-        }
-
-        if (!isJumping) {
-          position += 2
+        } else {
+          null
         }
       }
 
-      val outputString = output.joinToString(",")
-      if (outputString == originalDirections) {
-        return i
+    return findA() ?: error("No solution")
+  }
+
+  private fun solve(aRegister: Long, bRegister: Long, cRegister: Long): Result {
+    var a = aRegister
+    var b = bRegister
+    var c = cRegister
+
+    val combo = { operand: Int ->
+      when (operand) {
+        in 0..3 -> operand.toLong()
+        4 -> a
+        5 -> b
+        6 -> c
+        else -> error("Invalid operand: $operand")
+      }
+    }
+
+    var position = 0
+    val outputs = mutableListOf<Int>()
+
+    while (position in directions.indices) {
+      val opcode = directions[position]
+      val operand = directions[position + 1]
+
+      when (opcode) {
+        0 -> a = a shr combo(operand).toInt() // adv
+        1 -> b = b xor operand.toLong() // bxl
+        2 -> b = combo(operand) % 8 // bst
+        3 -> if (a != 0L) { // jnz
+          position = operand
+          continue
+        }
+        4 -> b = b xor c // bxc
+        5 -> outputs.add((combo(operand) % 8).toInt()) // out
+        6 -> b = a shr combo(operand).toInt() // bxs
+        7 -> c = a shr combo(operand).toInt() // cxs
       }
 
-      i++
+      position += 2
     }
+
+    return Result(a, b, c, outputs)
   }
 
-
-  /**
-   * @return value for the A register
-   */
-  private fun adv(aRegister: Long, operand: Long): Long {
-    return (aRegister / 2L.pow(operand)).toInt().toLong()
-  }
-
-  /**
-   * @return value for the B register
-   */
-  private fun bxl(bRegister: Long, operand: Long): Long {
-    return bRegister xor operand
-  }
-
-  /**
-   * @return value for the B register
-   */
-  private fun bst(operand: Long): Long {
-    return operand % 8
-  }
-
-  /**
-   * @return true if should jump to operand
-   */
-  private fun jnz(aRegister: Long): Boolean {
-    return when (aRegister) {
-      0L -> false
-      else -> true
-    }
-  }
-
-  /**
-   * @return value for the register B
-   */
-  private fun bxc(bRegister: Long, cRegister: Long, operand: Long): Long {
-    return bRegister xor cRegister
-  }
-
-  /**
-   * @return value to be outputted
-   */
-  private fun out(operand: Long): Int {
-    return (operand % 8).toInt()
-  }
-
-  /**
-   * @return value for the register B
-   */
-  private fun bdv(aRegister: Long, operand: Long): Long {
-    return (aRegister / 2L.pow(operand)).toInt().toLong()
-  }
-
-  /**
-   * @return value for the register C
-   */
-  private fun cdv(aRegister: Long, operand: Long): Long {
-    return aRegister / 2L.pow(operand)
-  }
-
-  data class Result(val a: Long, val b: Long, val c: Long, val output: String)
+  data class Result(val a: Long, val b: Long, val c: Long, val output: List<Int>)
 }
 
 fun main() {
@@ -197,7 +86,7 @@ fun main() {
 
   val day17 = Day17(text)
   val solutionOne = day17.solutionOne()
-  println("Solution 1: $solutionOne")
+  println("Solution 1: ${solutionOne.output.joinToString(",")}")
 
   val solutionTwo = day17.solutionTwo()
   println("Solution 2: $solutionTwo")

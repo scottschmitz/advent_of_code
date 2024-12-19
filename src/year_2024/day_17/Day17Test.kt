@@ -34,7 +34,7 @@ internal class Day17Test {
     val day17 = Day17(text)
     val result = day17.solutionOne()
 
-    assertEquals("0,1,2", result.output)
+    assertEquals(listOf(0,1,2), result.output)
   }
 
   @Test
@@ -49,7 +49,7 @@ internal class Day17Test {
     val day17 = Day17(text)
     val result = day17.solutionOne()
 
-    assertEquals("4,2,5,6,7,7,7,7,3,1,0", result.output)
+    assertEquals(listOf(4,2,5,6,7,7,7,7,3,1,0), result.output)
     assertEquals(0, result.a)
   }
 
@@ -95,7 +95,7 @@ internal class Day17Test {
     val day17 = Day17(text)
     val solutionOne = day17.solutionOne()
 
-    assertEquals("4,6,3,5,6,3,5,2,1,0", solutionOne.output)
+    assertEquals(listOf(4,6,3,5,6,3,5,2,1,0), solutionOne.output)
   }
 
   @Test
