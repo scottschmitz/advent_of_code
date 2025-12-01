@@ -82,9 +82,6 @@ class Day${AOC_DAY} : BaseDay<List<String>, Int, Int>("year_${YEAR}/day_${AOC_DA
     }
 
     //<editor-fold desc="Samples">
-    private val sampleText = listOf<String>(
-    )
-    
     @Test
     fun part1Sample() {
         val sampleInput = processFile(sampleText)
@@ -93,8 +90,18 @@ class Day${AOC_DAY} : BaseDay<List<String>, Int, Int>("year_${YEAR}/day_${AOC_DA
 
     @Test
     fun part1() {
-        val realInput = processFile(parsedInput)
-        assertEquals(1, solutionOne(realInput))
+        println("Part 1: ${solutionOne(parsedInput)}")
+    }
+
+    @Test
+    fun part2Sample() {
+        val sampleInput = processFile(sampleText)
+        assertEquals(1, solutionTwo(sampleInput))
+    }
+
+    @Test
+    fun part2() {
+        println("Part 2: ${solutionTwo(parsedInput)}")
     }
     //</editor-fold>
 }

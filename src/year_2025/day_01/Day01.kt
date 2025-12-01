@@ -35,7 +35,6 @@ class Day01(): BaseDay<List<Int>, Int, Int>("year_2025/day_01/Day01.txt") {
 
         var current = 50
         input.forEach { step ->
-
             val dist = abs(step)
             val dir = step.sign
 
