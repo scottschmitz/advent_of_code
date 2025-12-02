@@ -7,6 +7,7 @@ repositories {
 }
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    implementation(kotlin("test"))
 }
 
 tasks {
