@@ -3,7 +3,6 @@ package year_2025.day_02
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import BaseDay
-import kotlin.math.exp
 
 class Day02 : BaseDay<List<Day02.IdRange>, Long, Long>("year_2025/day_02/Day02.txt") {
 

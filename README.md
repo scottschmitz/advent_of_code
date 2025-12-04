@@ -66,6 +66,7 @@ When prompted for `${AOC_DAY}`, enter the day number with leading zeros:
 ```
 package year_${YEAR}.day_${AOC_DAY}
 
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import BaseDay
 
