@@ -1,16 +1,8 @@
 package util
 
-fun IntRange.product(other: IntRange) = this.flatMap { i ->
-    other.map {
-        j -> i to j
-    }
-}
-
-val IntRange.size: Int get() = (last - first + 1).coerceAtLeast(1)
-
-fun List<IntRange>.simplifyOverlaps(): List<IntRange> {
+fun List<LongRange>.simplifyOverlaps(): List<LongRange> {
     val sorted = sortedBy { it.first }
-    val result = mutableListOf<IntRange>()
+    val result = mutableListOf<LongRange>()
 
     var current = sorted.first()
     for (range in sorted.drop(1)) {
@@ -25,3 +17,5 @@ fun List<IntRange>.simplifyOverlaps(): List<IntRange> {
     result += current
     return result
 }
+
+val LongRange.size: Long get() = (last - first + 1).coerceAtLeast(1)
