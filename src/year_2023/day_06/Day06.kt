@@ -1,18 +1,8 @@
 package year_2023.day_06
 
 import readInput
+import util.product
 
-fun List<Long>.product(): Long {
-    var product = 0L
-    this.forEach { value ->
-        if (product == 0L) {
-            product = value
-        } else {
-            product *= value
-        }
-    }
-    return product
-}
 object Day06 {
     /**
      *
