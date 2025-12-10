@@ -29,6 +29,8 @@ class Day09 : BaseDay<List<Point>, Long, Long>("year_2025/day_09/Day09.txt") {
         return combos.maxBy { it.second }.second
     }
 
+    // Converted solution from reddit. Python -> Kotlin
+    // https://github.com/Noble-Mushtak/Advent-of-Code/blob/main/2025/day09/solution2.py
     override fun solutionTwo(input: List<Point>): Long {
 
         if (input.isEmpty()) return 0L

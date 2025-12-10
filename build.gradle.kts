@@ -8,6 +8,7 @@ repositories {
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.9.0")
     implementation(kotlin("test"))
+    implementation("tools.aqua:z3-turnkey:4.14.1")
 }
 
 tasks {

@@ -6,6 +6,10 @@ typealias Point = Pair<Int, Int>
 
 fun Point.x() = this.first
 fun Point.y() = this.second
+
+val Point.x get() = this.first
+val Point.y get() = this.second
+
 fun Point.directionTo(other: Point): Direction {
   if (!neighbors(includeDiagonals = true).contains(other)) {
     throw IllegalArgumentException("Points are not neighbors")
