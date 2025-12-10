@@ -3,10 +3,8 @@ package year_2025.day_06
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import BaseDay
+import util.product
 import util.transpose
-import year_2023.day_06.product
-import year_2025.day_04.Day04
-import year_2025.day_04.Day04.Tile
 
 class Day06 : BaseDay<List<String>, Long, Long>("year_2025/day_06/Day06.txt") {
 
