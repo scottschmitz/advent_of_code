@@ -70,16 +70,16 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import BaseDay
 
-class Day${AOC_DAY} : BaseDay<List<String>, Int, Int>("year_${YEAR}/day_${AOC_DAY}/Day${AOC_DAY}.txt") {
+class Day${AOC_DAY} : BaseDay<List<String>, Long, Long>("year_${YEAR}/day_${AOC_DAY}/Day${AOC_DAY}.txt") {
 
     override fun processFile(input: List<String>): List<String> = input
 
-    override fun solutionOne(input: List<String>): Int {
-        return -1
+    override fun solutionOne(input: List<String>): Long {
+        return -1L
     }
 
-    override fun solutionTwo(input: List<String>): Int {
-        return -1
+    override fun solutionTwo(input: List<String>): Long {
+        return -1L
     }
 
     //<editor-fold desc="Samples">
@@ -89,7 +89,7 @@ class Day${AOC_DAY} : BaseDay<List<String>, Int, Int>("year_${YEAR}/day_${AOC_DA
     @Test
     fun part1Sample() {
         val sampleInput = processFile(sampleText)
-        assertEquals(1, solutionOne(sampleInput))
+        assertEquals(1L, solutionOne(sampleInput))
     }
 
     @Test
@@ -100,7 +100,7 @@ class Day${AOC_DAY} : BaseDay<List<String>, Int, Int>("year_${YEAR}/day_${AOC_DA
     @Test
     fun part2Sample() {
         val sampleInput = processFile(sampleText)
-        assertEquals(1, solutionTwo(sampleInput))
+        assertEquals(1L, solutionTwo(sampleInput))
     }
 
     @Test
