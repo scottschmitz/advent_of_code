@@ -46,7 +46,7 @@ class Day10 : BaseDay<List<Machine>, Int, Int>("year_2025/day_10/Day10.txt") {
     }
 
     private fun solveLights(machine: Machine): Int {
-        return Pathfinding.search(
+        return Pathfinding.optimalPath(
             start = List(machine.indicatorLightDiagram.size) { false },
             goalFunction = { state -> state == machine.indicatorLightDiagram },
             neighbours = { state ->
